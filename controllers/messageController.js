@@ -4,14 +4,14 @@ module.exports = class MessageController {
     static async getMessage(req, res, next) {
         try {
             const messages = await Message.findAll({
-                order: [['createdAt', 'DESC']],
+                order: [['createdAt', 'ASC']],
                 include: [{
                     model: User,
                     attributes: ['username', 'id']
                 }]
             });
 
-            res.json(messages.reverse());
+            res.json(messages);
         } catch (error) {
             next(error);
         }
