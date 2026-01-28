@@ -9,7 +9,7 @@ const io = new Server(server, {
     origin: "*"
   }
 });
-// const port = 3000;
+// const port = 3000; 
 const multer = require('multer');
 const cors = require('cors'); 
 
@@ -22,7 +22,7 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 } 
 });
 
-// Controller
+// CONTROLLER
 const UserController = require('./controllers/userController');
 const MessageController = require('./controllers/messageController');
 
