@@ -1,7 +1,15 @@
 require('dotenv').config();
 const express = require('express');
+const { createServer } = require("node:http");
+const { Server } = require('socket.io');
 const app = express();
-const port = 3000;
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
+});
+// const port = 3000;
 const multer = require('multer');
 const cors = require('cors'); 
 
@@ -34,6 +42,6 @@ app.post('/ai/summarize', AIController.summarizeChat);
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+server.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
 });
