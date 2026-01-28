@@ -42,6 +42,34 @@ app.post('/ai/summarize', AIController.summarizeChat);
 
 app.use(errorHandler);
 
+io.on('connection', (socket) => {
+  console.log('User Connected:', socket.id);
+
+  socket.on('send-message', async (messageData) => { // --> Untuk menerima pesan
+    try {
+      console.log('Message Recieved:', messageData)
+
+      
+      const savedMessage = await Message.create({ // --> Simpan pesan ke database
+        UserId: messageData.userId,
+        content: messageData.content,
+        imgUrl: messageData.image_url || null
+      });
+
+      const messageWithUser = await Message.findByPk(savedMessage.id, { // --> Ambil pesan beserta informasi user
+        include: [{ model: User, attributes: ['username'] }]
+      })
+
+      io.emit('receive-message', messageWithUser); // --> Kirim pesan ke semua client yang terhubung
+
+    } catch (error) {
+      console.log('errror', error);
+      socket.emit('error', { message: 'Failed to send message.' });
+      
+    }
+  })
+})
+
 server.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");
 });
