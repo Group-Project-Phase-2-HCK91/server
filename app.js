@@ -12,6 +12,7 @@ const io = new Server(server, {
 // const port = 3000; 
 const multer = require('multer');
 const cors = require('cors'); 
+const { User, Message } = require('./models');
 
 app.use(cors());
 app.use(express.json());
